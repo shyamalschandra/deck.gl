@@ -134,14 +134,14 @@ export default class PolygonLayer extends CompositeLayer {
 
     // Filled Polygon Layer
     const polygonLayer =
-      filled &&
       hasData &&
       new SolidPolygonLayer(
         this.getSubLayerProps({
           id: 'fill',
           updateTriggers: {
             getElevation: updateTriggers.getElevation,
-            getColor: updateTriggers.getFillColor
+            getFillColor: updateTriggers.getFillColor,
+            getLineColor: updateTriggers.getLineColor
           }
         }),
         {
@@ -150,39 +150,15 @@ export default class PolygonLayer extends CompositeLayer {
           elevationScale,
 
           fp64,
-          wireframe: false,
+          filled,
+          wireframe,
 
           getPolygon,
           getElevation,
-          getColor: getFillColor,
+          getFillColor,
+          getLineColor,
 
           lightSettings
-        }
-      );
-
-    const polygonWireframeLayer =
-      extruded &&
-      wireframe &&
-      hasData &&
-      new SolidPolygonLayer(
-        this.getSubLayerProps({
-          id: 'wireframe',
-          updateTriggers: {
-            getElevation: updateTriggers.getElevation,
-            getColor: updateTriggers.getLineColor
-          }
-        }),
-        {
-          data,
-
-          fp64,
-          extruded: true,
-          elevationScale,
-          wireframe: true,
-
-          getPolygon,
-          getElevation,
-          getColor: getLineColor
         }
       );
 
@@ -221,7 +197,6 @@ export default class PolygonLayer extends CompositeLayer {
     return [
       // If not extruded: flat fill layer is drawn below outlines
       !extruded && polygonLayer,
-      polygonWireframeLayer,
       polygonLineLayer,
       // If extruded: draw fill layer last for correct blending behavior
       extruded && polygonLayer

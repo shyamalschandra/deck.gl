@@ -141,14 +141,14 @@ export default class GeoJsonLayer extends CompositeLayer {
 
     // Filled Polygon Layer
     const polygonFillLayer =
-      filled &&
       hasPolygon &&
       new subLayers.PolygonLayer(
         this.getSubLayerProps({
           id: 'polygon-fill',
           updateTriggers: {
             getElevation: updateTriggers.getElevation,
-            getColor: updateTriggers.getFillColor
+            getFillColor: updateTriggers.getFillColor,
+            getLineColor: updateTriggers.getLineColor
           }
         }),
         {
@@ -156,36 +156,13 @@ export default class GeoJsonLayer extends CompositeLayer {
           fp64,
           extruded,
           elevationScale,
-          wireframe: false,
+          filled,
+          wireframe,
           lightSettings,
           getPolygon: getCoordinates,
           getElevation,
-          getColor: getFillColor
-        }
-      );
-
-    const polygonWireframeLayer =
-      wireframe &&
-      extruded &&
-      hasPolygon &&
-      new subLayers.PolygonLayer(
-        this.getSubLayerProps({
-          id: 'polygon-wireframe',
-          updateTriggers: {
-            getElevation: updateTriggers.getElevation,
-            getColor: updateTriggers.getLineColor
-          }
-        }),
-        {
-          data: polygonFeatures,
-
-          fp64,
-          extruded,
-          elevationScale,
-          wireframe: true,
-          getPolygon: getCoordinates,
-          getElevation,
-          getColor: getLineColor
+          getFillColor,
+          getLineColor
         }
       );
 
@@ -270,7 +247,6 @@ export default class GeoJsonLayer extends CompositeLayer {
     return [
       // If not extruded: flat fill layer is drawn below outlines
       !extruded && polygonFillLayer,
-      polygonWireframeLayer,
       polygonLineLayer,
       pathLayer,
       pointLayer,
