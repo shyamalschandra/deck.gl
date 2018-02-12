@@ -1,4 +1,5 @@
 import {PureComponent, createElement} from 'react';
+import PropTypes from 'prop-types';
 import OrbitControllerJS from '../../core/pure-js/orbit-controller-js';
 import OrbitViewport from '../../core/viewports/orbit-viewport';
 
@@ -49,5 +50,5 @@ export default class OrbitController extends PureComponent {
 }
 
 OrbitController.displayName = 'OrbitController';
-OrbitController.propTypes = OrbitControllerJS.propTypes;
+OrbitController.propTypes = OrbitControllerJS.getPropTypes(PropTypes);
 OrbitController.defaultProps = OrbitControllerJS.defaultProps;
